@@ -703,6 +703,16 @@
               <FileType>5</FileType>
               <FilePath>.\hardware\Serial.h</FilePath>
             </File>
+            <File>
+              <FileName>countsensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\countsensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>countsensor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hardware\countsensor.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
