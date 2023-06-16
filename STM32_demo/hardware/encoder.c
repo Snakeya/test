@@ -62,7 +62,7 @@ void encoder_init(void)
 }
 
 /*在stm32中,中断函数的名字都是固定的，每个中断通道对应一个函数,无参无返回值
-名字为：EXTI0_IRQHandler           ; EXTI Line 0
+外部中断名字为：EXTI0_IRQHandler           ; EXTI Line 0
         EXTI1_IRQHandler           ; EXTI Line 1
         EXTI2_IRQHandler           ; EXTI Line 2
         EXTI3_IRQHandler           ; EXTI Line 3
