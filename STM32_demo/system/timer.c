@@ -1,6 +1,6 @@
 #include "stm32f10x.h"
 #include "Serial.h"
-#define USE_EXTERNAL_CLOCK 1
+//#define USE_EXTERNAL_CLOCK 1
 /*
         1.配置RCC,打开外设时钟
         2.选择时基单元的时钟源 //stm32f10x_tim.h,1073~1081
@@ -30,16 +30,13 @@ void timer_init(void)
     TIM_TimeBaseInitTypeDef timebase_str;
     timebase_str.TIM_CounterMode = TIM_CounterMode_Up;//向上计数
     //ARR+PSC决定定时频率（时间），定时频率 = CK_CNT/(ARR+1) = CK_PSC/(PSC+1)/(ARR+1)
-    if(USE_EXTERNAL_CLOCK)
-    {
+    #ifdef USE_EXTERNAL_CLOCK//使用外部时钟
         timebase_str.TIM_Period = 10 - 1;//ARR，
         timebase_str.TIM_Prescaler = 1 - 1;//PSC
-    } 
-    else
-    {
+    #else
         timebase_str.TIM_Period = 10000 - 1;//ARR，
         timebase_str.TIM_Prescaler = 7200 - 1;//PSC，对72M进行7200分频，得到10k计数频率
-    }
+    #endif
     
     timebase_str.TIM_ClockDivision = TIM_CKD_DIV1;//不管
     timebase_str.TIM_RepetitionCounter = 0;//高级定时器的参数，不需要给0

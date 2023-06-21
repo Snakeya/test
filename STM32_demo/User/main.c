@@ -4,18 +4,19 @@
 #include "encoder.h"
 #include "Serial.h"
 #include "timer.h"
+#include "pwm.h"
 
 int main(void)
 {
 	Serial_Init();
 	//countsensor_init();
 	//encoder_init();
-	timer_init();
+	//timer_init();
+	pwminit();
+	
 	
 	printf("hello\r\n");
+	pwm_led();
+	
 
-	while (1)
-	{
-		printf("ARR is %d\r\n",TIM_GetCounter(TIM2));//打印自动重装值，0~9999
-	}
 }
