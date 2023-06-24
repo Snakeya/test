@@ -65,7 +65,7 @@ void pwminit(void)
         timebase_str.TIM_Period = 10 - 1;//ARR，
         timebase_str.TIM_Prescaler = 1 - 1;//PSC
     #else
-        timebase_str.TIM_Period = 100 - 1;//ARR，
+        timebase_str.TIM_Period = 100 - 1;//ARR，控制PWM分辨率，100
         timebase_str.TIM_Prescaler = 720 - 1;//PSC，对72M进行7200分频，得到10k计数频率
     #endif
     
@@ -111,7 +111,7 @@ void pwm_led(void)
 		//printf("ARR is %d\r\n",TIM_GetCounter(TIM2));//打印自动重装值，0~9999
 		for(i = 0; i < 100;i++)
 		{
-			TIM_SetCompare1(TIM2,i);
+			TIM_SetCompare1(TIM2,i);//设置CCR的值，用于控制占空比
             Delay_ms(10);
 			printf("CCR is %d \r\n",i);
 		}
@@ -188,5 +188,69 @@ void pwm_servo_test(void)
 
     }
 }
+
+
+
+void input_capture_init(void)
+{
+    //开启gpio和tim时钟
+    //配置为输入模式
+    //配置timebase
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+	
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//input up上拉输入
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;//tim3的1通道对应引脚为pa6
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	TIM_InternalClockConfig(TIM3);
+	
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
+	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInitStructure.TIM_Period = 65536 - 1;		//ARR，最大计数值65536
+	TIM_TimeBaseInitStructure.TIM_Prescaler = 72 - 1;		//PSC
+	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0;
+	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseInitStructure);
+    //配置输入捕获单元
+    TIM_ICInitTypeDef TIM_ICInitStructure;
+	TIM_ICInitStructure.TIM_Channel = TIM_Channel_1;//配置定时器输入捕获通道
+	TIM_ICInitStructure.TIM_ICFilter = 0xF;//配置滤波器，数字越大，滤波效果越好
+	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;//边沿检测极性选择
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;//配置定时器输入捕获分频器，@TIM_ICPSC_DIV1不分频
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
+    TIM_ICInit(TIM3, &TIM_ICInitStructure);
+    //选择从模式触发源
+    TIM_SelectInputTrigger(TIM3, TIM_TS_TI1FP1);
+    //选择触发后执行的操作
+    TIM_SelectSlaveMode(TIM3, TIM_SlaveMode_Reset);
+    //tim_cmd开启定时器
+    TIM_Cmd(TIM3, ENABLE);
+}
+
+uint32_t input_capture_get_freq(void)
+{
+    return 1000000 / (TIM_GetCapture1(TIM3) + 1);
+}
+
+
+/*
+    输入捕获实验：使用一个io口输出pwm，另一个io口测量输出频率
+*/
+void input_capture_test1(void)
+{
+    pwminit();//pa15输出pwm
+    input_capture_init();
+
+    uint32_t freq = 0;
+    freq = input_capture_get_freq();
+
+    while(1)
+    {
+        printf("freq is %d\r\n",freq);
+    }
     
+} 
     
