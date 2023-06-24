@@ -12,11 +12,12 @@ int main(void)
 	//countsensor_init();
 	//encoder_init();
 	//timer_init();
-	pwminit();
+	//pwminit();
 	
 	
 	printf("hello\r\n");
-	pwm_led();
+	//pwm_led();
+	pwm_servo_test();
 	
 
 }

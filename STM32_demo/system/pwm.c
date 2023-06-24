@@ -1,5 +1,6 @@
 #include "stm32f10x.h"
 #include "timer.h"
+#include "Delay.h"
 /*
     初始化输出比较单元，四个输出比较通道，不同的通道对应的GPIO口不同，查看引脚定义表
     void TIM_OC1Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
@@ -120,6 +121,72 @@ void pwm_led(void)
             Delay_ms(10);
 		}
 	}
+}
+
+/*
+    舵机：根据PWM信号占空比控制输出角度
+    PWM信号要求：周期20ms，对应PWM周期50hz
+    ,高电平宽度：0.5ms~2.5ms
+*/
+void pwm_servo_init(void)
+{
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+	
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	TIM_InternalClockConfig(TIM2);
+	
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
+	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInitStructure.TIM_Period = 20000 - 1;		//ARR
+	TIM_TimeBaseInitStructure.TIM_Prescaler = 72 - 1;		//PSC
+	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0;
+	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseInitStructure);
+	
+	TIM_OCInitTypeDef TIM_OCInitStructure;
+	TIM_OCStructInit(&TIM_OCInitStructure);
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 0;		//CCR
+	TIM_OC2Init(TIM2, &TIM_OCInitStructure);//PA1对应TIM2的通道2
+    /*
+        tips：对于同一个定时器的，所以频率是一样的，占空比由各自的CCR决定，可以自己设定
+    */
+	
+	TIM_Cmd(TIM2, ENABLE);
+}
+
+
+
+
+void Servo_SetAngle(float Angle)
+{
+    TIM_SetCompare2(TIM2, Angle / 180 * 2000 + 500);//PWM_SetCompare2通道2 
+}
+
+
+void pwm_servo_test(void)
+{
+    pwm_servo_init();
+
+    float angle = 0;
+    while(1)
+    {
+        for(angle = 0;angle <= 180 ;angle += 10)
+        {
+            Servo_SetAngle(angle);
+            Delay_s(2);
+        }
+        angle = 0;
+
+    }
 }
     
     
