@@ -27,6 +27,18 @@
     分辨率 = 1/(ARR + 1)
 */
 
+/*
+    @brief:将pa0重映射到pa15
+    参考：STM32F10xxx参考手册（中文）.pdf,8.3.7 定时器复用功能重映射
+
+*/
+static void gpio_remap(void)
+{
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);//开启APB2外设时钟
+    GPIO_PinRemapConfig(GPIO_PartialRemap1_TIM2,ENABLE);//将pa0重映射到pa15
+    GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable,ENABLE);//pa15默认为jtag引脚，需要remap一下，remap后p13,pb3,pb4可以当做GPIO使用
+}
+
 void pwminit(void)
 {
      //1
@@ -74,7 +86,12 @@ void pwminit(void)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
     GPIO_InitTypeDef GPIO_InitStructure;
    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;//复用推挽输出
+   #ifdef USE_REMAP
    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+   #else
+   gpio_remap();
+   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
+   #endif
    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
    GPIO_Init(GPIOA,&GPIO_InitStructure);
 
