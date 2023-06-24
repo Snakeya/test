@@ -17,7 +17,8 @@ int main(void)
 	
 	printf("hello\r\n");
 	//pwm_led();
-	pwm_servo_test();
+	//pwm_servo_test();
+	input_capture_test1();
 	
 
 }

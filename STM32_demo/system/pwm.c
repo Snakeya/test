@@ -221,7 +221,8 @@ void input_capture_init(void)
 	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;//边沿检测极性选择
 	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;//配置定时器输入捕获分频器，@TIM_ICPSC_DIV1不分频
 	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
-    TIM_ICInit(TIM3, &TIM_ICInitStructure);
+    //TIM_ICInit(TIM3, &TIM_ICInitStructure);
+    TIM_PWMIConfig(TIM3, &TIM_ICInitStructure);//pwmi,可以同时测量占空比和频率
     //选择从模式触发源
     TIM_SelectInputTrigger(TIM3, TIM_TS_TI1FP1);
     //选择触发后执行的操作
@@ -235,6 +236,11 @@ uint32_t input_capture_get_freq(void)
     return 1000000 / (TIM_GetCapture1(TIM3) + 1);
 }
 
+uint32_t IC_GetDuty(void)
+{
+	return (TIM_GetCapture2(TIM3) + 1) * 100 / (TIM_GetCapture1(TIM3) + 1);
+}
+
 
 /*
     输入捕获实验：使用一个io口输出pwm，另一个io口测量输出频率
@@ -244,12 +250,12 @@ void input_capture_test1(void)
     pwminit();//pa15输出pwm
     input_capture_init();
 
-    uint32_t freq = 0;
-    freq = input_capture_get_freq();
-
+    TIM_SetCompare1(TIM2, 50);
+ 
     while(1)
     {
-        printf("freq is %d\r\n",freq);
+        printf("freq is %d\r\n",input_capture_get_freq());
+        printf("duty is %d\r\n",IC_GetDuty());
     }
     
 } 
