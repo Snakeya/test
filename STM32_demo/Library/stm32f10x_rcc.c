@@ -757,7 +757,7 @@ void RCC_OTGFSCLKConfig(uint32_t RCC_OTGFSCLKSource)
   * @param  RCC_PCLK2: defines the ADC clock divider. This clock is derived from 
   *   the APB2 clock (PCLK2).
   *   This parameter can be one of the following values:
-  *     @arg RCC_PCLK2_Div2: ADC clock = PCLK2/2
+  *     @arg RCC_PCLK2_Div2: ADC clock = PCLK2/2  //PCLK2 == APB2时钟
   *     @arg RCC_PCLK2_Div4: ADC clock = PCLK2/4
   *     @arg RCC_PCLK2_Div6: ADC clock = PCLK2/6
   *     @arg RCC_PCLK2_Div8: ADC clock = PCLK2/8

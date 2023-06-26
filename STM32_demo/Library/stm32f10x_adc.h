@@ -49,25 +49,29 @@
 
 typedef struct
 {
+  //独立 or 双adc模式
   uint32_t ADC_Mode;                      /*!< Configures the ADC to operate in independent or
                                                dual mode. 
                                                This parameter can be a value of @ref ADC_mode */
 
+  //扫描转换模式
   FunctionalState ADC_ScanConvMode;       /*!< Specifies whether the conversion is performed in
                                                Scan (multichannels) or Single (one channel) mode.
                                                This parameter can be set to ENABLE or DISABLE */
 
+  //指定转换模式为连续 or 单次
   FunctionalState ADC_ContinuousConvMode; /*!< Specifies whether the conversion is performed in
                                                Continuous or Single mode.
                                                This parameter can be set to ENABLE or DISABLE. */
-
+  //定义用于启动规则组转换的外部触发源
   uint32_t ADC_ExternalTrigConv;          /*!< Defines the external trigger used to start the analog
                                                to digital conversion of regular channels. This parameter
                                                can be a value of @ref ADC_external_trigger_sources_for_regular_channels_conversion */
-
+  //数据对齐方式
   uint32_t ADC_DataAlign;                 /*!< Specifies whether the ADC data alignment is left or right.
                                                This parameter can be a value of @ref ADC_data_align */
 
+  //指定规则组转换列表里通道的数目
   uint8_t ADC_NbrOfChannel;               /*!< Specifies the number of ADC channels that will be converted
                                                using the sequencer for regular channel group.
                                                This parameter must range from 1 to 16. */
@@ -128,7 +132,7 @@ typedef struct
 #define ADC_ExternalTrigConv_Ext_IT11_TIM8_TRGO    ((uint32_t)0x000C0000) /*!< For ADC1 and ADC2 */
 
 #define ADC_ExternalTrigConv_T1_CC3                ((uint32_t)0x00040000) /*!< For ADC1, ADC2 and ADC3 */
-#define ADC_ExternalTrigConv_None                  ((uint32_t)0x000E0000) /*!< For ADC1, ADC2 and ADC3 */
+#define ADC_ExternalTrigConv_None                  ((uint32_t)0x000E0000) /*!< For ADC1, ADC2 and ADC3 软件触发*/
 
 #define ADC_ExternalTrigConv_T3_CC1                ((uint32_t)0x00000000) /*!< For ADC3 only */
 #define ADC_ExternalTrigConv_T2_CC3                ((uint32_t)0x00020000) /*!< For ADC3 only */
@@ -431,6 +435,7 @@ void ADC_StructInit(ADC_InitTypeDef* ADC_InitStruct);
 void ADC_Cmd(ADC_TypeDef* ADCx, FunctionalState NewState);
 void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState);
 void ADC_ITConfig(ADC_TypeDef* ADCx, uint16_t ADC_IT, FunctionalState NewState);
+//四个函数用于校准adc
 void ADC_ResetCalibration(ADC_TypeDef* ADCx);
 FlagStatus ADC_GetResetCalibrationStatus(ADC_TypeDef* ADCx);
 void ADC_StartCalibration(ADC_TypeDef* ADCx);

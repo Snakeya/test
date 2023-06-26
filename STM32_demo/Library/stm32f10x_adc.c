@@ -576,15 +576,15 @@ void ADC_DiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   *     @arg ADC_Channel_17: ADC Channel17 selected
   * @param  Rank: The rank in the regular group sequencer. This parameter must be between 1 to 16.
   * @param  ADC_SampleTime: The sample time value to be set for the selected channel. 
-  *   This parameter can be one of the following values:
-  *     @arg ADC_SampleTime_1Cycles5: Sample time equal to 1.5 cycles
+  *   This parameter can be one of the following values: //采样时间，单位为adcclk的周期，
+  *     @arg ADC_SampleTime_1Cycles5: Sample time equal to 1.5 cycles   //快
   *     @arg ADC_SampleTime_7Cycles5: Sample time equal to 7.5 cycles
   *     @arg ADC_SampleTime_13Cycles5: Sample time equal to 13.5 cycles
   *     @arg ADC_SampleTime_28Cycles5: Sample time equal to 28.5 cycles	
   *     @arg ADC_SampleTime_41Cycles5: Sample time equal to 41.5 cycles	
   *     @arg ADC_SampleTime_55Cycles5: Sample time equal to 55.5 cycles	
   *     @arg ADC_SampleTime_71Cycles5: Sample time equal to 71.5 cycles	
-  *     @arg ADC_SampleTime_239Cycles5: Sample time equal to 239.5 cycles	
+  *     @arg ADC_SampleTime_239Cycles5: Sample time equal to 239.5 cycles	  //稳定
   * @retval None
   */
 void ADC_RegularChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t Rank, uint8_t ADC_SampleTime)
@@ -1185,11 +1185,11 @@ void ADC_TempSensorVrefintCmd(FunctionalState NewState)
   * @param  ADCx: where x can be 1, 2 or 3 to select the ADC peripheral.
   * @param  ADC_FLAG: specifies the flag to check. 
   *   This parameter can be one of the following values:
-  *     @arg ADC_FLAG_AWD: Analog watchdog flag
-  *     @arg ADC_FLAG_EOC: End of conversion flag
-  *     @arg ADC_FLAG_JEOC: End of injected group conversion flag
-  *     @arg ADC_FLAG_JSTRT: Start of injected group conversion flag
-  *     @arg ADC_FLAG_STRT: Start of regular group conversion flag
+  *     @arg ADC_FLAG_AWD: Analog watchdog flag //模拟看门狗标志位
+  *     @arg ADC_FLAG_EOC: End of conversion flag //规则组转换完成标志位
+  *     @arg ADC_FLAG_JEOC: End of injected group conversion flag //注入组转换完成标志位
+  *     @arg ADC_FLAG_JSTRT: Start of injected group conversion flag  //注入组开始转换标志位
+  *     @arg ADC_FLAG_STRT: Start of regular group conversion flag  //规则组开始转换标志位
   * @retval The new state of ADC_FLAG (SET or RESET).
   */
 FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, uint8_t ADC_FLAG)
