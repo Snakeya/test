@@ -76,13 +76,14 @@ void EXTI0_IRQHandler(void)
 {
     if(EXTI_GetITStatus(EXTI_Line0) == SET)//对于中断通道10~15，应该在中断函数中调用EXTI_GetITStatus函数确定中断通道
     {
-        
-        
-        if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_1) == 0)
-        {
-            printf("enter exti0\r\n");
-            encoder_count --;
-        }
+        /*如果出现数据乱跳的现象，可再次判断引脚电平，以避免抖动*/
+		if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0) == 0)
+		{
+			if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1) == 0)
+			{
+				g_encoder_count --;
+			}
+		}
         EXTI_ClearITPendingBit(EXTI_Line0);//清除中断标志位，否则程序会一直进中断
     }
 }
@@ -93,16 +94,22 @@ void EXTI1_IRQHandler(void)
     {
         
         
-        if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_0) == 0)
-        {
-            printf("enter exti1\r\n");
-            encoder_count ++;
-        }
+        /*如果出现数据乱跳的现象，可再次判断引脚电平，以避免抖动*/
+		if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1) == 0)
+		{
+			if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0) == 0)
+			{
+				g_encoder_count ++;
+			}
+		}
         EXTI_ClearITPendingBit(EXTI_Line1);//清除中断标志位，否则程序会一直进中断
     }
 }
 
 int16_t get_encoder_count(void)
 {
-    return encoder_count;
+   	int16_t Temp;
+	Temp = g_encoder_count;
+	g_encoder_count = 0;
+	return Temp;
 }
