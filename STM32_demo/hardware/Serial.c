@@ -68,11 +68,18 @@ void Serial_SendNumber(uint32_t Number, uint8_t Length)
 	}
 }
 
-int fputc(int ch, FILE *f)
-{
-	Serial_SendByte(ch);
-	return ch;
-}
+
+// /*
+// 	使用printf
+// 	1.重定向fputc函数
+// 	2.勾选use microlib
+// 	3.头文件#include <stdio.h>
+// */
+// int fputc(int ch, FILE *f)
+// {
+// 	Serial_SendByte(ch);
+// 	return ch;
+// }
 
 void Serial_Printf(char *format, ...)
 {

@@ -688,6 +688,56 @@
               <FileType>5</FileType>
               <FilePath>.\system\Delay.h</FilePath>
             </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\system\timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\system\timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\system\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\system\pwm.h</FilePath>
+            </File>
+            <File>
+              <FileName>ad.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\system\ad.c</FilePath>
+            </File>
+            <File>
+              <FileName>ad.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\system\ad.h</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\system\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\system\usart.h</FilePath>
+            </File>
+            <File>
+              <FileName>iic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\system\iic.c</FilePath>
+            </File>
+            <File>
+              <FileName>iic.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\system\iic.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -722,6 +772,31 @@
               <FileName>encoder.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\hardware\encoder.h</FilePath>
+            </File>
+            <File>
+              <FileName>OLED_Font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hardware\OLED_Font.h</FilePath>
+            </File>
+            <File>
+              <FileName>mpu6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\mpu6050.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpu6050.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hardware\mpu6050.h</FilePath>
+            </File>
+            <File>
+              <FileName>screen.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\screen.c</FilePath>
+            </File>
+            <File>
+              <FileName>screen.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hardware\screen.h</FilePath>
             </File>
           </Files>
         </Group>

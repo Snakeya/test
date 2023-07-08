@@ -1,5 +1,6 @@
 #include "stm32f10x.h"
-#include "Serial.h"
+//#include "Serial.h"
+#include "usart.h"
 /*
     正转波形
     a:————____————
@@ -13,8 +14,10 @@
 /*
     接线： 
 */
+#define encoder_contrarotate EXTI0_IRQHandler //逆时针旋转中断
+#define encoder_clockwise_rotation EXTI1_IRQHandler//顺时针旋转中断
 
-int16_t encoder_count = 0;
+int16_t g_encoder_count = 0;//单次旋转计数值
 void encoder_init(void)
 {
     /*1.配置RCC,打开外设时钟
@@ -26,6 +29,7 @@ void encoder_init(void)
     //1
    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);
+   RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);//开启AFIO时钟，AFIO功能：复用功能引脚重映射、中断引脚选择
     //2
    GPIO_InitTypeDef GPIO_InitStructure;
    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//上拉输入
@@ -72,7 +76,7 @@ void encoder_init(void)
     中断编程建议：1.不要在中断函数调用delay等耗时的函数
                 2.不要在中断函数里操作硬件，建议操作变量或标志位
 */
-void EXTI0_IRQHandler(void)
+void encoder_contrarotate(void)
 {
     if(EXTI_GetITStatus(EXTI_Line0) == SET)//对于中断通道10~15，应该在中断函数中调用EXTI_GetITStatus函数确定中断通道
     {
@@ -81,6 +85,7 @@ void EXTI0_IRQHandler(void)
 		{
 			if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1) == 0)
 			{
+                printf("--\r\n");
 				g_encoder_count --;
 			}
 		}
@@ -88,7 +93,7 @@ void EXTI0_IRQHandler(void)
     }
 }
 
-void EXTI1_IRQHandler(void)
+void encoder_clockwise_rotation(void)
 {
     if(EXTI_GetITStatus(EXTI_Line1) == SET)//对于中断通道10~15，应该在中断函数中调用EXTI_GetITStatus函数确定中断通道
     {
@@ -99,6 +104,7 @@ void EXTI1_IRQHandler(void)
 		{
 			if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0) == 0)
 			{
+                printf("++\r\n");
 				g_encoder_count ++;
 			}
 		}
