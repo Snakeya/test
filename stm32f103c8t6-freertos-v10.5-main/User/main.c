@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2023-07-08 21:40:20
- * @LastEditTime: 2023-07-09 14:05:03
+ * @LastEditTime: 2023-07-09 21:45:24
  * @LastEditors: LAPTOP-REOS7BFD
  * @Description: In User Settings Edit
  * @FilePath: \stm32f103c8t6-freertos-v10.5-main\User\main.c
@@ -13,54 +13,70 @@
 #include "portmacro.h"
 #include "Serial.h"
 
-static TaskHandle_t led_task_handle0 = NULL;
-static TaskHandle_t serial_task_handle1 = NULL;
+static TaskHandle_t serial_task1_handle = NULL;
+static TaskHandle_t serial_task2_handle = NULL;
+
+//静态创建任务3传入的参数
+StaticTask_t xtask3_tcb;
+StackType_t xtask3_stack[100];//任务3的栈
 
 
-void led_init(void)
+StaticTask_t xidle_tcb;//空闲任务tcb
+StackType_t xidle_stack[100];//空闲任务栈
+
+/*
+    静态创建任务，需实现此函数，查看vTaskStartScheduler定义
+*/
+void vApplicationGetIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
+								StackType_t ** ppxIdleTaskStackBuffer,
+								uint32_t * pulIdleTaskStaticSize)
 {
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-	
-	GPIO_InitTypeDef GPIO_InitStructure;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_2 | GPIO_Pin_4;
-	GPIO_InitStructure.GPIO_Speed =  GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	*ppxIdleTaskTCBBuffer = &xidle_tcb;
+	*ppxIdleTaskStackBuffer = xidle_stack;
+	*pulIdleTaskStaticSize = 100;
 }
-void led_task0(void *arg)
-{
-	while(1)                            
-	{
-/* 		GPIO_SetBits(GPIOA, GPIO_Pin_0);//高
-		vTaskDelay(500/portTICK_PERIOD_MS);
-		GPIO_ResetBits(GPIOA, GPIO_Pin_0);//低
-		vTaskDelay(500/portTICK_PERIOD_MS);
-				GPIO_SetBits(GPIOA, GPIO_Pin_2);
-		vTaskDelay(1000/portTICK_PERIOD_MS);
-		GPIO_ResetBits(GPIOA, GPIO_Pin_2);
-		vTaskDelay(1000/portTICK_PERIOD_MS);
-				GPIO_SetBits(GPIOA, GPIO_Pin_4);
-		vTaskDelay(2000/portTICK_PERIOD_MS);
-		GPIO_ResetBits(GPIOA, GPIO_Pin_4);
-		vTaskDelay(2000/portTICK_PERIOD_MS); */
-         printf("led_task0\r\n");
-	}
-}
-
 
 void serial_task1(void *arg)
 {
     while(1)
     {
-        printf("hello world\r\n");
+        printf("1\r\n");
     }
 }
+
+void serial_task2(void *arg)
+{
+    while(1)
+    {
+        printf("2\r\n");
+    }
+}
+
+void serial_task3(void *arg)
+{
+	while(1)
+	{
+		printf("3\r\n");
+	}
+}
+
+
 int main(void) 
 {
-	led_init();
     Serial_Init();
-	xTaskCreate(led_task0, "led_task0", 1024, NULL, 20, &led_task_handle0);
-    xTaskCreate(serial_task1, "serial_task1", 1024, NULL, 20, &serial_task_handle1);
+    printf("hello world\r\n");
+	xTaskCreate(serial_task1,"task1",100,NULL,1,&serial_task1_handle);
+	xTaskCreate(serial_task2,"task2",100,NULL,1,&serial_task2_handle);
+	/*
+		静态创建任务，需打开	configSUPPORT_STATIC_ALLOCATION
+	*/
+	xTaskCreateStatic(serial_task3,"task3", 100,NULL, 1,xtask3_stack,&xtask3_tcb);
+                                    
+                                    
+                                   
+                                    
+                                    
+
 	vTaskStartScheduler();
 	while(1);
 }
