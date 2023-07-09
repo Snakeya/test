@@ -722,7 +722,7 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB ) PRIVILEGED_FUNCTION;
                             const char * const pcName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
                             const configSTACK_DEPTH_TYPE usStackDepth,
                             void * const pvParameters,
-                            UBaseType_t uxPriority,//优先级
+                            UBaseType_t uxPriority,//优先级，值越小，优先级越低（和其他rtos相反）
                             TaskHandle_t * const pxCreatedTask )
     {
         TCB_t * pxNewTCB;

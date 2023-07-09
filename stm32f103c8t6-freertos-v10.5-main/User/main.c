@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2023-07-08 21:40:20
- * @LastEditTime: 2023-07-09 21:45:24
+ * @LastEditTime: 2023-07-09 21:57:22
  * @LastEditors: LAPTOP-REOS7BFD
  * @Description: In User Settings Edit
  * @FilePath: \stm32f103c8t6-freertos-v10.5-main\User\main.c
@@ -65,7 +65,10 @@ int main(void)
 {
     Serial_Init();
     printf("hello world\r\n");
-	xTaskCreate(serial_task1,"task1",100,NULL,1,&serial_task1_handle);
+	/*
+		默认调度机制下：高优先级的任务优先执行，如果优先级没有主动放弃运行的话，低优先级的任务不会运行
+	*/
+	xTaskCreate(serial_task1,"task1",100,NULL,2,&serial_task1_handle);
 	xTaskCreate(serial_task2,"task2",100,NULL,1,&serial_task2_handle);
 	/*
 		静态创建任务，需打开	configSUPPORT_STATIC_ALLOCATION
