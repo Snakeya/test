@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2023-08-05 16:50:17
- * @LastEditTime: 2023-08-05 16:53:21
+ * @LastEditTime: 2023-08-30 23:34:25
  * @LastEditors: LAPTOP-REOS7BFD
  * @Description: In User Settings Edit
  * @FilePath: \C_test\7数据类型自动转换\data_type.c
@@ -21,6 +21,7 @@ void foo(void)
     //添加一个冲突，保留
 }
 
+//我的修改，保留
 int main(void)
 {
     foo();
