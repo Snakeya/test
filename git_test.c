@@ -14,9 +14,11 @@ int main(void)
 	while (1)
 	{
 		//sourcetree上的第一次修改
-		//GITHUB上的第一次修改
+		//GITHUB上的第一次修改git config --global --add safe.directory "*";
+
 		
 	}
 	//soucetree第二次修改
 	//github第二次修改
+	//github第三次
 }
