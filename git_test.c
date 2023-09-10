@@ -13,6 +13,7 @@ int main(void)
 	GPIO_ResetBits(GPIOC, GPIO_Pin_13);
 	while (1)
 	{
+		//GITHUB上的第一次修改
 		
 	}
 }
