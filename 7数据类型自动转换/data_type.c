@@ -1,30 +1,31 @@
 /*
- * @Author: your name
- * @Date: 2023-08-05 16:50:17
- * @LastEditTime: 2023-08-30 23:34:25
- * @LastEditors: LAPTOP-REOS7BFD
- * @Description: In User Settings Edit
- * @FilePath: \C_test\7数据类型自动转换\data_type.c
+* @作者:你的名字
+* @日期:2023-08-05 16:50:17
+* @ LastEditTime:2023-08-30 23:34:25
+* @LastEditors: LAPTOP-REOS7BFD
+* @Description:在用户设置编辑
+* @FilePath: \C_test\7数据类型自动转换\data_type.c
  */
-#include <string.h>
-#include <stdio.h>
+#包括 <string.h>
+#包括 <stdio.h>
 
 /*
-    原因是当表达式中存在有符号类型和无符号类型时所有的操作数都自动转换为无符号类型。
-    因此-20变成了一个非常大的正整数，所以该表达式计算出的结果大于6。
+原因是当表达式中存在有符号类型和无符号类型时所有的操作数都自动转换为无符号类型。
+因此-20变成了一个非常大的正整数,所以该表达式计算出的结果大于6。
 */
-void foo(void)
+空的富（中国姓氏）(空的)
 {
-    unsigned int a = 6;
-    int b = -20;
-    (a+b > 6) ? puts("> 6") : puts("<= 6");
-    //添加一个冲突，保留aaa
+无符号整数a =6;
+int b = -20;
+    (a+b >6) ? 放("> 6") : 放("<= 6");
+    //添加一个冲突,保留美国汽车协会
 }
 
-//我的修改，保留
-int main(void)
+//我的修改,保留
+（同Internationalorganizations）国际组织主要的(空的)
 {
-    foo();
+    富（中国姓氏）();
     
-    return 0;
+    返回 0;
 }
+//在开源代码库上修改远程仓库
