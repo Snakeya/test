@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2023-09-10 22:39:12
- * @LastEditTime: 2023-09-10 23:51:30
+ * @LastEditTime: 2023-09-10 23:58:49
  * @LastEditors: LAPTOP-REOS7BFD
  * @Description: In User Settings Edit
  * @FilePath: \undefinedf:\aaprj\stm32\git_test.c
@@ -27,6 +27,7 @@ int main(void)
 		//ST第四次
 		//st第六次
 		//st7
+		//st8
 		
 	}
 	//soucetree第二次修改
